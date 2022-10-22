@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import MyBmob from "../app/bmob";
+import realtime, { AV } from "../app/leancloud";
+import { RootState } from "../app/store";
 
 export type Login = {
     logged: boolean,
     status: 'idle' | 'loading' | 'success' | 'failed',
     error?: unknown,
+    client: ReturnType<typeof realtime.createIMClient> | null
 }
 
 type LoginUser = {
@@ -15,12 +17,9 @@ type LoginUser = {
 // 登录异步 Thunk 
 export const loginThunk = createAsyncThunk<any, LoginUser>(
     'login/asyncLogin',
-     async (loginUser: LoginUser) => {
-        // @ts-ignore
-        // 莫名奇妙的错误
-        let res = await MyBmob.User.login(loginUser.username, loginUser.password)
-        console.log(res)
-        return res
+    async (loginUser: LoginUser) => {
+        let user = await AV.User.logIn(loginUser.username, loginUser.password)
+        return realtime.createIMClient(user)
     }
 )
 
@@ -28,6 +27,7 @@ export const loginThunk = createAsyncThunk<any, LoginUser>(
 const initialState: Login = {
     logged: false,
     status: 'idle',
+    client: null,
 }
 
 // 登录 Slice
@@ -43,7 +43,9 @@ const loginSlice = createSlice({
             })
             // 登录成功
             .addCase(loginThunk.fulfilled, (state, action) => {
+                state.logged = true
                 state.status = 'success'
+                state.client = action.payload
             })
             // 登录失败
             .addCase(loginThunk.rejected, (state, action) => {
@@ -54,5 +56,7 @@ const loginSlice = createSlice({
 })
 
 const loginReducer = loginSlice.reducer
+
+export const selectLogged = (state: RootState) => state.login.logged
 
 export default loginReducer
