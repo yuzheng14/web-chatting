@@ -40,6 +40,11 @@ next-env.d.ts
 
 # config
 config.json
+config.ts
 
 # test
 test.js
+test.ts
+
+# vscode
+.vscode

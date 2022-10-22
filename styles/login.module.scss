@@ -1,0 +1,23 @@
+.container{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginForm {
+    width: 300px;
+    max-width: 300px;
+}
+
+.loginFormForgot {
+    float: right;
+}
+
+.antColRtl .loginFormForgot {
+    float: left;
+}
+
+.loginFormButton {
+    width: 100%;
+}
