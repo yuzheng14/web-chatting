@@ -3,7 +3,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import loginStyle from '../../styles/login.module.scss'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { loginThunk, selectLoginError, selectLoginLogged, selectLoginStatus } from '../../features/login-slice'
+import { loginThunk, LoginUser, selectLoginError, selectLoginLogged, selectLoginStatus } from '../../features/login-slice'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
@@ -35,7 +35,7 @@ const Login: React.FC<{}> = () => {
         }
     }, [status])
 
-    const onFinish = async ({ username, password }: { username: string, password: string }) => {
+    const onFinish = async ({ username, password }: LoginUser) => {
         dispatch(loginThunk({ username, password }))
     }
     const onFinishFailed = () => {
@@ -104,7 +104,7 @@ const Login: React.FC<{}> = () => {
                         <Button type='primary' htmlType='submit' className={loginStyle.loginFormButton}>
                             登录
                         </Button>
-                        或者 <Link href="">现在注册</Link>
+                        或者 <Link href="/register">现在注册</Link>
                     </Form.Item>
                 </Form>
             </div >

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import realtime, { AV } from "../app/leancloud";
 import { RootState } from "../app/store";
 
+// 定义 login SLice 类型
 export type Login = {
     logged: boolean,
     status: 'idle' | 'loading' | 'success' | 'failed',
@@ -9,7 +10,8 @@ export type Login = {
     client: ReturnType<typeof realtime.createIMClient> | null
 }
 
-type LoginUser = {
+// 定义登录用户类型
+export type LoginUser = {
     username: string,
     password: string,
 }
