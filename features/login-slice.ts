@@ -5,7 +5,7 @@ import { RootState } from "../app/store";
 export type Login = {
     logged: boolean,
     status: 'idle' | 'loading' | 'success' | 'failed',
-    error?: unknown,
+    error?: string,
     client: ReturnType<typeof realtime.createIMClient> | null
 }
 
@@ -57,6 +57,8 @@ const loginSlice = createSlice({
 
 const loginReducer = loginSlice.reducer
 
-export const selectLogged = (state: RootState) => state.login.logged
+export const selectLoginLogged = (state: RootState) => state.login.logged
+export const selectLoginStatus = (state: RootState) => state.login.status
+export const selectLoginError = (state: RootState) => state.login.error
 
 export default loginReducer

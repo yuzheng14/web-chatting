@@ -3,38 +3,53 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import loginStyle from '../../styles/login.module.scss'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { loginThunk, selectLogged } from '../../features/login-slice'
+import { loginThunk, selectLoginError, selectLoginLogged, selectLoginStatus } from '../../features/login-slice'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 const Login: React.FC<{}> = () => {
     const dispatch = useAppDispatch()
-    const logged = useAppSelector(selectLogged)
+    const logged = useAppSelector(selectLoginLogged)
     const router = useRouter()
+    const status = useAppSelector(selectLoginStatus)
+    const error = useAppSelector(selectLoginError)
 
+    // 如果登录上，则跳转到下一页
     useEffect(() => {
         if (logged) {
             setTimeout(() => {
                 router.push('/login/login-success')
             }, 1000)
         }
-    },[logged])
+    }, [logged])
+
+    // 如果登录失败，则显示失败窗口
+    useEffect(() => {
+        if (status === 'failed') {
+            console.log(error);
+            if (error?.indexOf('mismatch')) {
+                message.error('用户名或密码错误，请重试')
+            } else {
+                message.error(error)
+            }
+        }
+    }, [status])
 
     const onFinish = async ({ username, password }: { username: string, password: string }) => {
         dispatch(loginThunk({ username, password }))
     }
     const onFinishFailed = () => {
-        
+
     }
 
-    
-    if (logged){
+
+    if (logged) {
         message.success('登录成功')
     }
 
     return (
         <>
-            
+
             <div className={loginStyle.container}>
                 {/* 表单 */}
                 <Form
