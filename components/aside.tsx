@@ -1,10 +1,12 @@
 import { Input } from "antd"
+import { ReactNode } from "react"
 
 type AsideProps = {
     currentFriend: string,
+    children: ReactNode,
 }
 
-const Aside: React.FC<AsideProps> = ({ currentFriend }) => {
+const Aside: React.FC<AsideProps> = ({ currentFriend, children }) => {
 
     const onSearch = (values: string) => {
         console.log(values);
