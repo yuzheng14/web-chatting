@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -6,12 +7,14 @@ import { useAppSelector } from '../app/hooks'
 
 const Home: NextPage = () => {
   const router = useRouter()
-  const isReady = router.isReady
   const logged = useAppSelector(state => state.login.logged)
 
   useEffect(() => {
     if (!logged) {
-      router.push('/login')
+      message.error('您当前尚未登录，即将跳转到登录页面')
+      setTimeout(() => { router.push('/login') }, 1000)
+    } else {
+      router.push('/conversation')
     }
   }, [logged])
 

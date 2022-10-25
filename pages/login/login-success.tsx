@@ -1,6 +1,16 @@
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import styles from '../../styles/login-success.module.scss'
 
 const LoginSuccess = () => {
+    const router = useRouter()
+
+    useEffect(() => {
+        setTimeout(() => {
+            router.push('/')
+        }, 1000)
+    })
+
     return (
         <>
             <div className={styles.center}>
